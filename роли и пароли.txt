@@ -1,0 +1,11 @@
+Роль: admin
+admin@example.com
+admin12345
+
+Роль: guide
+guide@example.com
+guide12345
+
+Роль: client
+client@example.com
+client12345
