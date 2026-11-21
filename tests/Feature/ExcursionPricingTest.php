@@ -16,7 +16,6 @@ class ExcursionPricingTest extends TestCase
     /** @test */
     public function it_calculates_price_correctly_for_per_group_rule()
     {
-
         $category = Category::factory()->create();
         $location = Location::factory()->create();
 
@@ -27,7 +26,7 @@ class ExcursionPricingTest extends TestCase
             'duration' => 90,
             'category_id' => $category->id,
             'location_id' => $location->id,
-            'status' => 'draft',
+            'status' => 'pending',
         ]);
 
         PricingRule::create([
@@ -45,7 +44,6 @@ class ExcursionPricingTest extends TestCase
     /** @test */
     public function it_generates_slug_from_title_automatically()
     {
-
         $category = Category::factory()->create();
         $location = Location::factory()->create();
 
@@ -56,7 +54,7 @@ class ExcursionPricingTest extends TestCase
             'duration' => 60,
             'category_id' => $category->id,
             'location_id' => $location->id,
-            'status' => 'draft',
+            'status' => 'pending',
         ]);
 
         $this->assertEquals('vechernyaya-moskva', $excursion->slug);
