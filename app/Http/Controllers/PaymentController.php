@@ -39,19 +39,19 @@ class PaymentController extends Controller
 
         $data = $request->validate([
             'card_number' => ['required', 'digits_between:16,19'],
-            'card_name'   => ['required', 'string', 'max:255'],
+            'card_name' => ['required', 'string', 'max:255'],
             'card_expiry' => ['required', 'regex:/^(0[1-9]|1[0-2])\/\d{2}$/'], // MM/YY
-            'card_cvv'    => ['required', 'digits_between:3,4'],
+            'card_cvv' => ['required', 'digits_between:3,4'],
         ]);
 
         $digits = preg_replace('/\D/', '', $data['card_number']);
-        $last4  = substr($digits, -4);
+        $last4 = substr($digits, -4);
 
         // 🔥 тут главное изменение — авто-подтверждение
         $booking->payment_status = 'paid';
         $booking->payment_method = 'card';
-        $booking->payment_last4  = $last4;
-        $booking->paid_at        = now();
+        $booking->payment_last4 = $last4;
+        $booking->paid_at = now();
 
         // только если бронь ещё не отменена — подтверждаем
         if ($booking->status === 'pending') {
@@ -64,5 +64,4 @@ class PaymentController extends Controller
             ->route('bookings.my') // подставь свой
             ->with('success', 'Оплата успешно выполнена, бронирование подтверждено.');
     }
-
 }

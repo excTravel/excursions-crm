@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\User;
 use App\Models\Excursion;
+use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -12,17 +12,33 @@ class UsersTable extends Component
     use WithPagination;
 
     public $search = '';
+
     public $roleFilter = '';
+
     public $statusFilter = '';
+
     public $confirmBlockModal = false;
+
     public $confirmUnblockModal = false;
+
     public ?User $selectedUser = null;
 
     protected $paginationTheme = 'tailwind';
 
-    public function updatingSearch() { $this->resetPage(); }
-    public function updatingRoleFilter() { $this->resetPage(); }
-    public function updatingStatusFilter() { $this->resetPage(); }
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingRoleFilter()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingStatusFilter()
+    {
+        $this->resetPage();
+    }
 
     public function openBlockModal($id)
     {
@@ -38,7 +54,9 @@ class UsersTable extends Component
 
     public function block()
     {
-        if (!$this->selectedUser) return;
+        if (! $this->selectedUser) {
+            return;
+        }
 
         $user = $this->selectedUser->fresh();
 
@@ -57,7 +75,9 @@ class UsersTable extends Component
 
     public function unblock()
     {
-        if (!$this->selectedUser) return;
+        if (! $this->selectedUser) {
+            return;
+        }
 
         $user = $this->selectedUser->fresh();
 
@@ -72,7 +92,9 @@ class UsersTable extends Component
     public function changeRole($id, $role)
     {
         $user = User::find($id);
-        if (!$user || !$role) return;
+        if (! $user || ! $role) {
+            return;
+        }
 
         $user->update(['role' => $role]);
         session()->flash('success', 'Роль пользователя изменена.');

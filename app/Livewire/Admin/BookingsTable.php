@@ -2,20 +2,24 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Booking;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Booking;
 
 class BookingsTable extends Component
 {
     use WithPagination;
 
     public $search = '';
+
     public $statusFilter = '';
+
     public $showModal = false;
+
     public $selectedBooking = null;
 
     protected $paginationTheme = 'tailwind';
+
     protected $queryString = ['search', 'statusFilter'];
 
     public function updatingSearch()
@@ -71,15 +75,13 @@ class BookingsTable extends Component
             'extraServices', // 🔹 чтобы не было N+1, если захочешь показывать их и в таблице
         ])
             ->when($this->search, function ($q) {
-                $q->whereHas('user', fn($q) =>
-                $q->where('name', 'like', "%{$this->search}%")
+                $q->whereHas('user', fn ($q) => $q->where('name', 'like', "%{$this->search}%")
                     ->orWhere('email', 'like', "%{$this->search}%")
                 )
-                    ->orWhereHas('excursion', fn($q) =>
-                    $q->where('title', 'like', "%{$this->search}%")
+                    ->orWhereHas('excursion', fn ($q) => $q->where('title', 'like', "%{$this->search}%")
                     );
             })
-            ->when($this->statusFilter, fn($q) => $q->where('status', $this->statusFilter))
+            ->when($this->statusFilter, fn ($q) => $q->where('status', $this->statusFilter))
             ->orderByDesc('created_at')
             ->paginate(10);
 

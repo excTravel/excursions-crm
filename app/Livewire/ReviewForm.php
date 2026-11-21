@@ -2,15 +2,17 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use App\Models\Review;
 use App\Models\Excursion;
+use App\Models\Review;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class ReviewForm extends Component
 {
     public $excursionId;
+
     public $rating = 5;
+
     public $comment = '';
 
     public function mount($excursion)
@@ -32,20 +34,21 @@ class ReviewForm extends Component
             ->where('excursion_id', $this->excursionId)
             ->exists()) {
             session()->flash('error', 'Вы уже оставили отзыв на эту экскурсию.');
+
             return;
         }
 
         // Проверка: участвовал ли в экскурсии
         $hasBooking = $user->bookings()
-            ->whereHas('schedule', fn($q) =>
-            $q->where('excursion_id', $this->excursionId)
+            ->whereHas('schedule', fn ($q) => $q->where('excursion_id', $this->excursionId)
                 ->whereNotNull('ends_at')
                 ->where('ends_at', '<', now())
             )
             ->exists();
 
-        if (!$hasBooking) {
+        if (! $hasBooking) {
             session()->flash('error', 'Вы можете оставить отзыв только после завершения экскурсии.');
+
             return;
         }
 
