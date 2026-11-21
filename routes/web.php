@@ -101,3 +101,4 @@ require __DIR__.'/auth.php';
 // test concurrency 3
 // test parallel 2
 // test parallel 3
+// test parallel 4
