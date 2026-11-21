@@ -71,11 +71,4 @@ jobs:
       run: php artisan test
 
     - name: Build Docker Image
-      run: |
-        if [ -f "Dockerfile" ]; then
-          docker build -t excursions-crm:test .
-        else
-          echo "Dockerfile в корне не найден. Проверяем Sail..."
-          # Если Dockerfile нет, мы создаем фейковый шаг для прохождения (либо указываем путь к Sail)
-          docker build -f vendor/laravel/sail/runtimes/8.2/Dockerfile -t excursions-crm:test . || echo "Docker build пропущен (нет Dockerfile)"
-        fi
+      run: docker build -f vendor/laravel/sail/runtimes/8.2/Dockerfile -t excursions-crm:test .
