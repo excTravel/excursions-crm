@@ -2,20 +2,24 @@
 
 namespace App\Livewire;
 
+use App\Models\Category;
+use App\Models\Excursion;
+use App\Models\Location;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Excursion;
-use App\Models\Category;
-use App\Models\Location;
 
 class ExcursionsList extends Component
 {
     use WithPagination;
 
     public $search = '';
+
     public array $selectedCategories = [];
+
     public $selectedLocation = '';
+
     public $selectedDate = '';
+
     public $sortBy = 'created_at';
 
     protected $queryString = [
@@ -43,8 +47,6 @@ class ExcursionsList extends Component
         $this->resetPage();
     }
 
-
-
     public function render()
     {
         $query = Excursion::with([
@@ -62,13 +64,12 @@ class ExcursionsList extends Component
             ->where('status', 'approved')
             ->whereHas('location', fn ($locations) => $locations->where('country', 'Россия'));
 
-
         // 🔍 Поиск по названию
         if ($this->search) {
             $query->where(function ($matches) {
-                $matches->where('title', 'like', '%' . $this->search . '%')
-                    ->orWhere('description', 'like', '%' . $this->search . '%')
-                    ->orWhereHas('location', fn ($location) => $location->where('city', 'like', '%' . $this->search . '%'));
+                $matches->where('title', 'like', '%'.$this->search.'%')
+                    ->orWhere('description', 'like', '%'.$this->search.'%')
+                    ->orWhereHas('location', fn ($location) => $location->where('city', 'like', '%'.$this->search.'%'));
             });
         }
 
@@ -90,14 +91,12 @@ class ExcursionsList extends Component
 
         // ↕️ Сортировка
         match ($this->sortBy) {
-            'price_asc'     => $query->orderBy('price', 'asc'),
-            'price_desc'    => $query->orderBy('price', 'desc'),
-            'duration_asc'  => $query->orderBy('duration', 'asc'),
+            'price_asc' => $query->orderBy('price', 'asc'),
+            'price_desc' => $query->orderBy('price', 'desc'),
+            'duration_asc' => $query->orderBy('duration', 'asc'),
             'duration_desc' => $query->orderBy('duration', 'desc'),
-            default          => $query->orderBy('created_at', 'desc'),
+            default => $query->orderBy('created_at', 'desc'),
         };
-
-
 
         return view('livewire.excursions-list', [
             'excursions' => $query->paginate(12),
@@ -105,7 +104,7 @@ class ExcursionsList extends Component
                 'Исторические', 'Архитектурные', 'Гастрономические',
                 'Природные', 'Современные', 'Еда и напитки',
             ])->orderBy('name')->get(),
-            'locations'  => Location::where('country', 'Россия')->orderBy('city')->get(),
+            'locations' => Location::where('country', 'Россия')->orderBy('city')->get(),
         ])->layout('layouts.app');
     }
 }

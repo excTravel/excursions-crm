@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
+use App\Models\Location;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Models\Category;
-use App\Models\User;
-use App\Models\Location;
 
 class ExcursionFactory extends Factory
 {
@@ -19,12 +19,12 @@ class ExcursionFactory extends Factory
         $locationId = Location::inRandomOrder()->value('id') ?? Location::factory()->create()->id;
 
         // найдём гида; если нет — создадим
-        $guideId = User::where('role','guide')->inRandomOrder()->value('id')
-            ?? User::factory()->state(['role'=>'guide'])->create()->id;
+        $guideId = User::where('role', 'guide')->inRandomOrder()->value('id')
+            ?? User::factory()->state(['role' => 'guide'])->create()->id;
 
         return [
             'title' => $title,
-            'slug' => Str::slug($title) . '-' . Str::random(4),
+            'slug' => Str::slug($title).'-'.Str::random(4),
             'description' => $this->faker->paragraph(4),
             'price' => $this->faker->numberBetween(500, 5000),
             'duration' => $this->faker->numberBetween(60, 240), // минуты

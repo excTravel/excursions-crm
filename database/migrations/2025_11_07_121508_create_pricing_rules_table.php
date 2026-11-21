@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -24,7 +23,6 @@ return new class extends Migration
             $table->unique(['excursion_id', 'min_people', 'max_people'], 'pricing_rules_unique_range');
         });
     }
-
 
     /**
      * Reverse the migrations.

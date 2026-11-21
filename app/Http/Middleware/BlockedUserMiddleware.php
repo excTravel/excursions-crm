@@ -4,8 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class BlockedUserMiddleware
 {
@@ -13,6 +13,7 @@ class BlockedUserMiddleware
     {
         if (Auth::check() && Auth::user()->is_blocked) {
             Auth::logout();
+
             return redirect()->route('login')->withErrors([
                 'email' => 'Ваш аккаунт заблокирован администратором.',
             ]);
@@ -21,4 +22,3 @@ class BlockedUserMiddleware
         return $next($request);
     }
 }
-

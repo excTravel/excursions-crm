@@ -2,13 +2,13 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\Schedule;
-use Carbon\Carbon;
+use Illuminate\Console\Command;
 
 class UpdateFinishedSchedules extends Command
 {
     protected $signature = 'schedules:update-finished';
+
     protected $description = 'Обновляет статусы расписаний (upcoming/ongoing/finished)';
 
     public function handle(): int
@@ -25,7 +25,7 @@ class UpdateFinishedSchedules extends Command
                     $end = $s->ends_at;    // ends_at либо из БД, либо рассчитается аксессором, если ты так сделал
 
                     // Если ends_at нет, но у экскурсии есть duration — посчитаем на лету
-                    if (!$end && $start && ($s->excursion->duration ?? null)) {
+                    if (! $end && $start && ($s->excursion->duration ?? null)) {
                         $end = (clone $start)->addMinutes((int) $s->excursion->duration);
                     }
 
@@ -49,6 +49,7 @@ class UpdateFinishedSchedules extends Command
             });
 
         $this->info('Статусы расписаний обновлены.');
+
         return self::SUCCESS;
     }
 }

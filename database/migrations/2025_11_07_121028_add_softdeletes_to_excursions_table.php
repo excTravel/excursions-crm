@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -12,12 +11,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('excursions', function (Illuminate\Database\Schema\Blueprint $table) {
-            if (!Schema::hasColumn('excursions', 'deleted_at')) {
+            if (! Schema::hasColumn('excursions', 'deleted_at')) {
                 $table->softDeletes()->after('updated_at');
             }
         });
     }
-
 
     /**
      * Reverse the migrations.

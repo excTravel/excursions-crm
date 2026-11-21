@@ -2,9 +2,9 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Booking;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class MyBookings extends Component
 {
@@ -32,8 +32,9 @@ class MyBookings extends Component
             ->where('user_id', Auth::id())
             ->findOrFail($id);
 
-        if (!$booking->canBeCanceled()) {
+        if (! $booking->canBeCanceled()) {
             $this->dispatch('notify', message: '❌ Бронирование уже нельзя отменить (меньше 24 ч)');
+
             return;
         }
 
