@@ -99,3 +99,4 @@ require __DIR__.'/auth.php';
 // test cache 4
 // test concurrency 2
 // test concurrency 3
+// test parallel 2
