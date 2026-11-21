@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Carbon\Carbon;
 
 class Schedule extends Model
 {
@@ -55,7 +55,7 @@ class Schedule extends Model
     protected static function booted()
     {
         static::creating(function ($schedule) {
-            if ($schedule->excursion && $schedule->excursion->duration && !$schedule->ends_at) {
+            if ($schedule->excursion && $schedule->excursion->duration && ! $schedule->ends_at) {
 
                 // приводим дату и время к Carbon
                 $date = $schedule->date instanceof Carbon
@@ -84,7 +84,7 @@ class Schedule extends Model
             return $this->ends_at->isPast();
         }
 
-        if (!empty($this->ends_at)) {
+        if (! empty($this->ends_at)) {
             return Carbon::parse($this->ends_at)->isPast();
         }
 
@@ -102,5 +102,4 @@ class Schedule extends Model
 
         return false;
     }
-
 }

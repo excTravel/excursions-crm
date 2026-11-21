@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 
 class Booking extends Model
 {
@@ -57,7 +57,9 @@ class Booking extends Model
 
     public function getStartAtAttribute(): ?Carbon
     {
-        if (!$this->schedule) return null;
+        if (! $this->schedule) {
+            return null;
+        }
 
         $date = $this->schedule->date instanceof Carbon
             ? $this->schedule->date->copy()
@@ -72,7 +74,9 @@ class Booking extends Model
 
     public function getEndAtAttribute(): ?Carbon
     {
-        if (!$this->schedule) return null;
+        if (! $this->schedule) {
+            return null;
+        }
 
         $date = $this->schedule->date instanceof Carbon
             ? $this->schedule->date->copy()
@@ -97,7 +101,7 @@ class Booking extends Model
             return false;
         }
 
-        if (!$this->start_at) {
+        if (! $this->start_at) {
             return false;
         }
 
@@ -114,6 +118,4 @@ class Booking extends Model
             ->withPivot(['quantity', 'unit_price', 'total_price'])
             ->withTimestamps();
     }
-
-
 }

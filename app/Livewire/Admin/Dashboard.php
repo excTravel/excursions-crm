@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Admin;
 
-use Livewire\Component;
-use App\Models\User;
-use App\Models\Excursion;
 use App\Models\Booking;
+use App\Models\Excursion;
 use App\Models\Review;
-use Illuminate\Support\Facades\DB;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Livewire\Component;
 
 class Dashboard extends Component
 {
@@ -60,7 +60,6 @@ class Dashboard extends Component
             ->orderByDesc('bookings_count')
             ->limit(5)
             ->get();
-
 
         return view('livewire.admin.dashboard', [
             'totalExcursions' => $totalExcursions,

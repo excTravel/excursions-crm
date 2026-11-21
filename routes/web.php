@@ -1,15 +1,15 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
-use App\Livewire\ExcursionsList;
-use App\Livewire\ExcursionShow;
-use App\Livewire\MyBookings;
-use App\Livewire\Guide\ExcursionsList as GuideExcursionsList;
-use App\Livewire\Guide\ExcursionForm;
-use App\Livewire\Guide\ExcursionEdit;
-use App\Livewire\Guide\Schedules;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProfileController;
+use App\Livewire\ExcursionShow;
+use App\Livewire\ExcursionsList;
+use App\Livewire\Guide\ExcursionEdit;
+use App\Livewire\Guide\ExcursionForm;
+use App\Livewire\Guide\ExcursionsList as GuideExcursionsList;
+use App\Livewire\Guide\Schedules;
+use App\Livewire\MyBookings;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +24,7 @@ Route::get('/', ExcursionsList::class)->name('excursions.list');
 Route::get('/excursions/{slug}', ExcursionShow::class)->name('excursions.show');
 
 // Перенаправление с dashboard на главную
-Route::get('/dashboard', fn() => redirect('/'))
+Route::get('/dashboard', fn () => redirect('/'))
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
@@ -46,7 +46,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/payment/booking/{booking}', [PaymentController::class, 'pay'])
         ->name('payment.booking.pay');
 });
-
 
 /*
 |--------------------------------------------------------------------------
@@ -86,11 +85,22 @@ Route::middleware(['auth', 'admin'])
         Route::get('/reviews', \App\Livewire\Admin\ReviewsTable::class)->name('reviews');
     });
 
-
-
 /*
 |--------------------------------------------------------------------------
 | Вход / Регистрация
 |--------------------------------------------------------------------------
 */
 require __DIR__.'/auth.php';
+// test run 3
+// test run 4
+// test run 5
+// test cache 2
+// test cache 3
+// test cache 4
+// test concurrency 2
+// test concurrency 3
+// test parallel 2
+// test parallel 3
+// test parallel 4
+// test docker cache 2
+// test docker cache 3
