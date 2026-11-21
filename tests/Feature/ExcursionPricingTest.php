@@ -20,7 +20,6 @@ class ExcursionPricingTest extends TestCase
         $category = Category::factory()->create();
         $location = Location::factory()->create();
 
-
         $excursion = Excursion::create([
             'title' => 'Прогулка по крышам',
             'description' => 'Тестовая экскурсия',
@@ -31,7 +30,6 @@ class ExcursionPricingTest extends TestCase
             'status' => 'draft',
         ]);
 
-
         PricingRule::create([
             'excursion_id' => $excursion->id,
             'min_people' => 1,
@@ -39,7 +37,6 @@ class ExcursionPricingTest extends TestCase
             'mode' => 'per_group',
             'price' => 4000,
         ]);
-
 
         $calculatedPrice = $excursion->priceForPeople(3);
         $this->assertEquals('4000.00', $calculatedPrice);
@@ -52,7 +49,6 @@ class ExcursionPricingTest extends TestCase
         $category = Category::factory()->create();
         $location = Location::factory()->create();
 
-
         $excursion = Excursion::create([
             'title' => 'Вечерняя Москва',
             'description' => 'Описание',
@@ -62,7 +58,6 @@ class ExcursionPricingTest extends TestCase
             'location_id' => $location->id,
             'status' => 'draft',
         ]);
-
 
         $this->assertEquals('vechernyaya-moskva', $excursion->slug);
     }
