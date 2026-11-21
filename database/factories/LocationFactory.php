@@ -14,7 +14,7 @@ class LocationFactory extends Factory
         return [
             'city' => $city,
             'country' => $this->faker->country(),
-            'slug' => Str::slug($city) . '-' . Str::random(4),
+            'slug' => Str::slug($city).'-'.Str::random(4),
         ];
     }
 }

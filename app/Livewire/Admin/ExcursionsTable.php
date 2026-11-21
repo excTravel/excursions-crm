@@ -2,25 +2,31 @@
 
 namespace App\Livewire\Admin;
 
-use Livewire\Component;
-use Livewire\WithPagination;
 use App\Models\Excursion;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class ExcursionsTable extends Component
 {
     use WithPagination;
 
     public string $search = '';
+
     public string $statusFilter = 'active'; // active | archived | deleted
+
     public bool $showModal = false;
+
     public bool $showRejectModal = false;
+
     public bool $showArchiveConfirm = false;
 
     public ?Excursion $selectedExcursion = null;
+
     public string $rejectionReason = '';
 
     protected $paginationTheme = 'tailwind';
+
     protected $queryString = ['search', 'statusFilter'];
 
     // 📦 Получение экскурсий
@@ -28,25 +34,23 @@ class ExcursionsTable extends Component
     {
         return Excursion::query()
             ->with(['guide', 'extraServices', 'routes']) // 🔹 добавили routes
-            ->when($this->statusFilter === 'archived', fn($q) => $q->where('status', 'archived'))
-            ->when($this->statusFilter === 'active', fn($q) => $q->where('status', '!=', 'archived'))
-            ->when($this->search, fn($q) =>
-            $q->where('title', 'like', "%{$this->search}%")
-                ->orWhereHas('guide', fn($g) => $g->where('name', 'like', "%{$this->search}%"))
+            ->when($this->statusFilter === 'archived', fn ($q) => $q->where('status', 'archived'))
+            ->when($this->statusFilter === 'active', fn ($q) => $q->where('status', '!=', 'archived'))
+            ->when($this->search, fn ($q) => $q->where('title', 'like', "%{$this->search}%")
+                ->orWhereHas('guide', fn ($g) => $g->where('name', 'like', "%{$this->search}%"))
             )
             ->orderByDesc('created_at')
             ->paginate(10);
     }
-
 
     // ✅ Одобрить экскурсию
     public function approve(int $id)
     {
         if ($exc = Excursion::find($id)) {
             $exc->update([
-                'status'       => 'approved',
-                'approved_by'  => Auth::id(),
-                'approved_at'  => now(),
+                'status' => 'approved',
+                'approved_by' => Auth::id(),
+                'approved_at' => now(),
             ]);
             session()->flash('success', '✅ Экскурсия одобрена');
         }
@@ -55,8 +59,8 @@ class ExcursionsTable extends Component
     public function openRejectModal(int $id)
     {
         $this->selectedExcursion = Excursion::find($id);
-        $this->showRejectModal   = true;
-        $this->rejectionReason   = '';
+        $this->showRejectModal = true;
+        $this->rejectionReason = '';
     }
 
     public function restore($id)
@@ -71,10 +75,12 @@ class ExcursionsTable extends Component
     // ❌ Отклонить экскурсию
     public function reject()
     {
-        if (!$this->selectedExcursion) return;
+        if (! $this->selectedExcursion) {
+            return;
+        }
 
         $this->selectedExcursion->update([
-            'status'           => 'rejected',
+            'status' => 'rejected',
             'rejection_reason' => $this->rejectionReason,
         ]);
 
@@ -93,7 +99,9 @@ class ExcursionsTable extends Component
     // 🗂 Архивировать экскурсию
     public function archive()
     {
-        if (!$this->selectedExcursion) return;
+        if (! $this->selectedExcursion) {
+            return;
+        }
 
         $this->selectedExcursion->update(['status' => 'archived']);
         $this->showArchiveConfirm = false;
@@ -133,11 +141,10 @@ class ExcursionsTable extends Component
         $this->showModal = true;
     }
 
-
     public function closeModal()
     {
-        $this->showModal         = false;
-        $this->showRejectModal   = false;
+        $this->showModal = false;
+        $this->showRejectModal = false;
         $this->showArchiveConfirm = false;
         $this->selectedExcursion = null;
     }

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,8 +10,10 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    public const ROLE_ADMIN  = 'admin';
-    public const ROLE_GUIDE  = 'guide';
+    public const ROLE_ADMIN = 'admin';
+
+    public const ROLE_GUIDE = 'guide';
+
     public const ROLE_CLIENT = 'client';
 
     protected $fillable = [
@@ -40,6 +41,4 @@ class User extends Authenticatable
     {
         return (bool) $this->is_blocked;
     }
-
-
 }

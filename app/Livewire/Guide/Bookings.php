@@ -2,13 +2,14 @@
 
 namespace App\Livewire\Guide;
 
-use Livewire\Component;
 use App\Models\Booking;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class Bookings extends Component
 {
     public $bookings = [];
+
     public $filter = 'pending'; // фильтр по умолчанию
 
     public function mount(): void
@@ -28,7 +29,7 @@ class Bookings extends Component
             'schedule.excursion',
             'extraServices', // 🔹 подгружаем доп. услуги
         ])
-            ->whereHas('schedule.excursion', fn($q) => $q->where('guide_id', Auth::id()));
+            ->whereHas('schedule.excursion', fn ($q) => $q->where('guide_id', Auth::id()));
 
         if ($this->filter !== 'all') {
             $query->where('status', $this->filter);
