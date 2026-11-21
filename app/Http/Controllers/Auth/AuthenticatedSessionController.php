@@ -45,3 +45,4 @@ class AuthenticatedSessionController extends Controller
         return redirect('/');
     }
 }
+// US-2: Login logic implemented and verified
