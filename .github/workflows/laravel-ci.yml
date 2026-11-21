@@ -4,6 +4,10 @@ on:
   pull_request:
     branches: [ "main" ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   DB_CONNECTION: mysql
   DB_HOST: 127.0.0.1
@@ -38,7 +42,7 @@ jobs:
       with:
         php-version: '8.2'
         extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, pdo_mysql
-        tools: composer:v2 # <--- ДЛЯ КЭША COMPOSER
+        tools: composer:v2
 
     - name: Cache Composer packages
       id: composer-cache
@@ -68,7 +72,7 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
-        cache: 'npm' # <--- ДЛЯ КЭША NPM
+        cache: 'npm'
 
     - name: Install NPM Dependencies
       run: npm ci
