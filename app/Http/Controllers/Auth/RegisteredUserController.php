@@ -49,3 +49,4 @@ class RegisteredUserController extends Controller
         return redirect(route('dashboard', absolute: false));
     }
 }
+    // TODO: Добавить отправку приветственного письма (US-1)
