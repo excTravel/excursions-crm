@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Excursion;
 use App\Models\Location;
 use App\Models\PricingRule;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -18,6 +19,7 @@ class ExcursionPricingTest extends TestCase
     {
         $category = Category::factory()->create();
         $location = Location::factory()->create();
+        $guide = User::factory()->create(['role' => 'guide']);
 
         $excursion = Excursion::create([
             'title' => 'Прогулка по крышам',
@@ -26,6 +28,7 @@ class ExcursionPricingTest extends TestCase
             'duration' => 90,
             'category_id' => $category->id,
             'location_id' => $location->id,
+            'guide_id' => $guide->id,
             'status' => 'pending',
         ]);
 
@@ -46,6 +49,7 @@ class ExcursionPricingTest extends TestCase
     {
         $category = Category::factory()->create();
         $location = Location::factory()->create();
+        $guide = User::factory()->create(['role' => 'guide']);
 
         $excursion = Excursion::create([
             'title' => 'Вечерняя Москва',
@@ -54,6 +58,7 @@ class ExcursionPricingTest extends TestCase
             'duration' => 60,
             'category_id' => $category->id,
             'location_id' => $location->id,
+            'guide_id' => $guide->id,
             'status' => 'pending',
         ]);
 
