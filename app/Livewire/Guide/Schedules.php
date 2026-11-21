@@ -2,16 +2,18 @@
 
 namespace App\Livewire\Guide;
 
-use Livewire\Component;
 use App\Models\Excursion;
 use App\Models\Schedule;
-use Carbon\Carbon;
+use Livewire\Component;
 
 class Schedules extends Component
 {
     public Excursion $excursion;
+
     public $date;
+
     public $start_time;
+
     public $max_people = 10;
 
     protected $rules = [
@@ -25,7 +27,6 @@ class Schedules extends Component
         'start_time' => 'datetime:H:i',
         'ends_at' => 'datetime',
     ];
-
 
     public function mount(Excursion $excursion)
     {

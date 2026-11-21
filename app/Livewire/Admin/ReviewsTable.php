@@ -2,19 +2,22 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Review;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Review;
 
 class ReviewsTable extends Component
 {
     use WithPagination;
 
     public $search = '';
+
     public $showModal = false;
+
     public $selectedReview = null;
 
     protected $paginationTheme = 'tailwind';
+
     protected $queryString = ['search'];
 
     public function updatingSearch()
@@ -44,11 +47,9 @@ class ReviewsTable extends Component
     {
         $reviews = Review::with(['user', 'excursion'])
             ->when($this->search, function ($q) {
-                $q->whereHas('user', fn($q) =>
-                $q->where('name', 'like', "%{$this->search}%")
+                $q->whereHas('user', fn ($q) => $q->where('name', 'like', "%{$this->search}%")
                     ->orWhere('email', 'like', "%{$this->search}%")
-                )->orWhereHas('excursion', fn($q) =>
-                $q->where('title', 'like', "%{$this->search}%")
+                )->orWhereHas('excursion', fn ($q) => $q->where('title', 'like', "%{$this->search}%")
                 );
             })
             ->orderByDesc('created_at')

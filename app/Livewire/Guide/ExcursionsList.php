@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Guide;
 
-use Livewire\Component;
 use App\Models\Excursion;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class ExcursionsList extends Component
 {

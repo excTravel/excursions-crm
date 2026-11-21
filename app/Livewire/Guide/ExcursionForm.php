@@ -2,23 +2,30 @@
 
 namespace App\Livewire\Guide;
 
+use App\Models\Category;
+use App\Models\Excursion;
+use App\Models\Location;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use App\Models\Excursion;
-use App\Models\Category;
-use App\Models\Location;
 
 class ExcursionForm extends Component
 {
     use WithFileUploads;
 
     public $title;
+
     public $description;
+
     public $price;
+
     public $duration;
+
     public $category_id;
+
     public $location_id;
+
     public $photos = [];
+
     public array $routePoints = [];
 
     /** @var array<int, array<string, mixed>> */
@@ -34,19 +41,21 @@ class ExcursionForm extends Component
         'photos.*' => 'nullable|image|max:4096',
 
         // Доп. услуги
-        'extraServices.*.name'        => 'nullable|string|max:255',
+        'extraServices.*.name' => 'nullable|string|max:255',
         'extraServices.*.description' => 'nullable|string|max:1000',
-        'extraServices.*.price'       => 'nullable|numeric|min:0',
-        'extraServices.*.per_person'  => 'boolean',
-        'extraServices.*.is_active'   => 'boolean',
+        'extraServices.*.price' => 'nullable|numeric|min:0',
+        'extraServices.*.per_person' => 'boolean',
+        'extraServices.*.is_active' => 'boolean',
     ];
 
     // ВАЖНО: метод вызывается напрямую из JS через component.call('addRoutePoint', payload)
     public function addRoutePoint(array $payload): void
     {
-        $lat = isset($payload['lat']) ? (float)$payload['lat'] : null;
-        $lng = isset($payload['lng']) ? (float)$payload['lng'] : null;
-        if ($lat === null || $lng === null) return;
+        $lat = isset($payload['lat']) ? (float) $payload['lat'] : null;
+        $lng = isset($payload['lng']) ? (float) $payload['lng'] : null;
+        if ($lat === null || $lng === null) {
+            return;
+        }
 
         $this->routePoints[] = [
             'lat' => round($lat, 6),
@@ -70,11 +79,11 @@ class ExcursionForm extends Component
     public function addExtraServiceRow(): void
     {
         $this->extraServices[] = [
-            'name'        => '',
+            'name' => '',
             'description' => '',
-            'price'       => null,
-            'per_person'  => false,
-            'is_active'   => true,
+            'price' => null,
+            'per_person' => false,
+            'is_active' => true,
         ];
     }
 
@@ -92,28 +101,28 @@ class ExcursionForm extends Component
         $this->validate();
 
         $excursion = Excursion::create([
-            'title'       => $this->title,
+            'title' => $this->title,
             'description' => $this->description,
-            'price'       => $this->price,
-            'duration'    => $this->duration,
+            'price' => $this->price,
+            'duration' => $this->duration,
             'category_id' => $this->category_id,
-            'guide_id'    => auth()->id(),
+            'guide_id' => auth()->id(),
             'location_id' => $this->location_id,
-            'status'      => 'pending',
+            'status' => 'pending',
         ]);
 
-        if (!empty($this->routePoints)) {
+        if (! empty($this->routePoints)) {
             $excursion->routes()->create([
                 'coordinates' => $this->routePoints,
                 'description' => 'Основной маршрут',
             ]);
         }
 
-        if (!empty($this->photos)) {
+        if (! empty($this->photos)) {
             foreach ($this->photos as $index => $photo) {
                 $path = $photo->store('excursions', 'public');
                 $excursion->photos()->create([
-                    'path'       => $path,
+                    'path' => $path,
                     'sort_order' => $index,
                 ]);
             }
@@ -123,6 +132,7 @@ class ExcursionForm extends Component
         $this->saveExtraServices($excursion);
 
         session()->flash('success', 'Экскурсия успешно создана!');
+
         return redirect()->route('guide.excursions');
     }
 
@@ -134,18 +144,18 @@ class ExcursionForm extends Component
         // Оставляем только осмысленные строки (с названием и ценой)
         $rows = collect($this->extraServices)
             ->filter(function ($row) {
-                return !empty($row['name'])
+                return ! empty($row['name'])
                     && $row['price'] !== null
                     && $row['price'] !== '';
             });
 
         foreach ($rows as $row) {
             $excursion->extraServices()->create([
-                'name'        => $row['name'],
+                'name' => $row['name'],
                 'description' => $row['description'] ?? null,
-                'price'       => $row['price'],
-                'per_person'  => !empty($row['per_person']),
-                'is_active'   => !empty($row['is_active']),
+                'price' => $row['price'],
+                'per_person' => ! empty($row['per_person']),
+                'is_active' => ! empty($row['is_active']),
             ]);
         }
     }
@@ -154,7 +164,7 @@ class ExcursionForm extends Component
     {
         return view('livewire.guide.excursion-form', [
             'categories' => Category::all(),
-            'locations'  => Location::all(),
+            'locations' => Location::all(),
         ])->layout('layouts.app');
     }
 }

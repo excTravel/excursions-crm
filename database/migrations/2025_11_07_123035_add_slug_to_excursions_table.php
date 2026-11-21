@@ -12,12 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('excursions', function (Illuminate\Database\Schema\Blueprint $table) {
-            if (!\Illuminate\Support\Facades\Schema::hasColumn('excursions', 'slug')) {
+            if (! \Illuminate\Support\Facades\Schema::hasColumn('excursions', 'slug')) {
                 $table->string('slug')->unique()->after('title');
             }
         });
     }
-
 
     /**
      * Reverse the migrations.

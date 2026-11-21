@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Route as ExcursionRoute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
-use App\Models\Route as ExcursionRoute;
 
 class Excursion extends Model
 {
@@ -55,10 +55,10 @@ class Excursion extends Model
             ->orderBy('max_people', 'asc')
             ->first();
 
-        if (!$rule) {
+        if (! $rule) {
             // правил нет — вернём базовую логику: цена * людей (как per_person)
             // или null, если хочешь явно требовать наличие правил
-            return (string) bcmul((string)$this->price, (string)$peopleCount, 2);
+            return (string) bcmul((string) $this->price, (string) $peopleCount, 2);
         }
 
         if ($rule->mode === 'per_group') {
@@ -66,13 +66,13 @@ class Excursion extends Model
         }
 
         // per_person
-        return (string) bcmul((string)$rule->price, (string)$peopleCount, 2);
+        return (string) bcmul((string) $rule->price, (string) $peopleCount, 2);
     }
 
     protected static function booted()
     {
         static::creating(function ($exc) {
-            if (empty($exc->slug) && !empty($exc->title)) {
+            if (empty($exc->slug) && ! empty($exc->title)) {
                 // обычная попытка
                 $slug = Str::slug(mb_substr($exc->title, 0, 80));
 
@@ -83,7 +83,7 @@ class Excursion extends Model
 
                 // крайний случай — тех. slug
                 if ($slug === '') {
-                    $slug = 'exc-' . Str::random(8);
+                    $slug = 'exc-'.Str::random(8);
                 }
 
                 $exc->slug = $slug;
@@ -91,17 +91,16 @@ class Excursion extends Model
         });
 
         static::saving(function ($exc) {
-            if (empty($exc->slug) && !empty($exc->title)) {
+            if (empty($exc->slug) && ! empty($exc->title)) {
                 $slug = Str::slug(mb_substr($exc->title, 0, 80));
-                if ($slug === '') $slug = 'exc-' . Str::random(8);
+                if ($slug === '') {
+                    $slug = 'exc-'.Str::random(8);
+                }
                 $exc->slug = $slug;
             }
         });
 
     }
-
-
-
 
     // ---- Relations ----
     public function category()
@@ -154,6 +153,4 @@ class Excursion extends Model
     {
         return $this->hasMany(\App\Models\ExtraService::class);
     }
-
-
 }

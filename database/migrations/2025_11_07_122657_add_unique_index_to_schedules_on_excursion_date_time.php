@@ -2,10 +2,11 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         // имя индекса
@@ -20,7 +21,7 @@ return new class extends Migration {
               AND index_name = ?
         ", [$indexName]);
 
-        if (!$exists || (int)$exists->cnt === 0) {
+        if (! $exists || (int) $exists->cnt === 0) {
             Schema::table('schedules', function (Blueprint $table) use ($indexName) {
                 // уникальный индекс по 4 колонкам
                 $table->unique(['excursion_id', 'date', 'start_time', 'deleted_at'], $indexName);
@@ -40,7 +41,7 @@ return new class extends Migration {
               AND index_name = ?
         ", [$indexName]);
 
-        if ($exists && (int)$exists->cnt > 0) {
+        if ($exists && (int) $exists->cnt > 0) {
             Schema::table('schedules', function (Blueprint $table) use ($indexName) {
                 $table->dropUnique($indexName);
             });
