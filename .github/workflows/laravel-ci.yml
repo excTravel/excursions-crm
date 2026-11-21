@@ -71,4 +71,4 @@ jobs:
       run: php artisan test
 
     - name: Build Docker Image
-      run: docker build -f vendor/laravel/sail/runtimes/8.2/Dockerfile -t excursions-crm:test .
+        run: docker build -t excursions-crm:test .
