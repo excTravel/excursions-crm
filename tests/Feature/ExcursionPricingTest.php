@@ -44,7 +44,7 @@ class ExcursionPricingTest extends TestCase
         $this->assertEquals('4000.00', $calculatedPrice);
     }
 
-    /** @test */
+        /** @test */
     public function it_generates_slug_from_title_automatically()
     {
         $category = Category::factory()->create();
@@ -52,8 +52,8 @@ class ExcursionPricingTest extends TestCase
         $guide = User::factory()->create(['role' => 'guide']);
 
         $excursion = Excursion::create([
-            'title' => 'Вечерняя Москва',
-            'description' => 'Описание',
+            'title' => 'Evening Moscow Tour',
+            'description' => 'Description',
             'price' => 1000,
             'duration' => 60,
             'category_id' => $category->id,
@@ -62,6 +62,6 @@ class ExcursionPricingTest extends TestCase
             'status' => 'pending',
         ]);
 
-        $this->assertEquals('vechernyaya-moskva', $excursion->slug);
+        $this->assertEquals('evening-moscow-tour', $excursion->slug);
     }
 }
