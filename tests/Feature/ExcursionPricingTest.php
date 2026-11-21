@@ -44,7 +44,7 @@ class ExcursionPricingTest extends TestCase
         $this->assertEquals('4000.00', $calculatedPrice);
     }
 
-        /** @test */
+    /** @test */
     public function it_generates_slug_from_title_automatically()
     {
         $category = Category::factory()->create();
