@@ -1,4 +1,3 @@
-// CI indentation fix
 <?php
 
 namespace App\Http\Controllers\Auth;
