@@ -49,57 +49,73 @@ class ExcursionsList extends Component
 
     public function render()
     {
-        $query = Excursion::with([
-            'category',
-            'location',
-            'photos',
-            'pricingRules' => fn ($rules) => $rules->orderBy('min_people')->orderBy('max_people'),
-            'schedules' => fn ($schedules) => $schedules
-                ->upcoming()
-                ->when($this->selectedDate, fn ($slots) => $slots->whereDate('date', $this->selectedDate))
-                ->orderBy('date')
-                ->orderBy('start_time')
-                ->with(['bookings' => fn ($bookings) => $bookings->whereIn('status', ['pending', 'confirmed'])]),
-        ])
-            ->where('status', 'approved')
-            ->whereHas('location', fn ($locations) => $locations->where('country', 'Россия'));
+        // Формируем базовый запрос для каталога
+        $excursionsQuery = Excursion::query()
+            ->with([
+                'category',
+                'location',
+                'photos',
+                'pricingRules' => fn ($rules) => $rules->orderBy('min_people')->orderBy('max_people'),
+                'schedules' => fn ($schedules) => $schedules
+                    ->upcoming()
+                    ->when($this->selectedDate, fn ($slots) => $slots->whereDate('date', $this->selectedDate))
+                    ->orderBy('date')
+                    ->orderBy('start_time')
+                    ->with(['bookings' => fn ($bookings) => $bookings->whereIn('status', ['pending', 'confirmed'])]),
+            ]);
 
-        // 🔍 Поиск по названию
-        if ($this->search) {
-            $query->where(function ($matches) {
-                $matches->where('title', 'like', '%'.$this->search.'%')
-                    ->orWhere('description', 'like', '%'.$this->search.'%')
-                    ->orWhereHas('location', fn ($location) => $location->where('city', 'like', '%'.$this->search.'%'));
+        // Показываем клиентам только одобренные экскурсии
+        $excursionsQuery->where('status', 'approved');
+        $excursionsQuery->whereHas('location', fn ($locations) => $locations->where('country', 'Россия'));
+
+        // Поиск по ключевым словам
+        if (!empty($this->search)) {
+            $excursionsQuery->where(function ($query) {
+                $query->where('title', 'like', '%' . $this->search . '%')
+                    ->orWhere('description', 'like', '%' . $this->search . '%')
+                    ->orWhereHas('location', fn ($loc) => $loc->where('city', 'like', '%' . $this->search . '%'));
             });
         }
 
-        // 🎨 Фильтр по категории
-        if ($this->selectedCategories) {
-            $query->whereIn('category_id', $this->selectedCategories);
+        // Фильтрация по категориям
+        if (count($this->selectedCategories) > 0) {
+            $excursionsQuery->whereIn('category_id', $this->selectedCategories);
         }
 
-        // 📍 Фильтр по локации
-        if ($this->selectedLocation) {
-            $query->where('location_id', $this->selectedLocation);
+        // Фильтрация по локации
+        if (!empty($this->selectedLocation)) {
+            $excursionsQuery->where('location_id', $this->selectedLocation);
         }
 
-        if ($this->selectedDate) {
-            $query->whereHas('schedules', fn ($schedules) => $schedules
+        // Фильтрация по дате
+        if (!empty($this->selectedDate)) {
+            $excursionsQuery->whereHas('schedules', fn ($schedules) => $schedules
                 ->upcoming()
                 ->whereDate('date', $this->selectedDate));
         }
 
-        // ↕️ Сортировка
-        match ($this->sortBy) {
-            'price_asc' => $query->orderBy('price', 'asc'),
-            'price_desc' => $query->orderBy('price', 'desc'),
-            'duration_asc' => $query->orderBy('duration', 'asc'),
-            'duration_desc' => $query->orderBy('duration', 'desc'),
-            default => $query->orderBy('created_at', 'desc'),
-        };
+        // Сортировка результатов
+        switch ($this->sortBy) {
+            case 'price_asc':
+                $excursionsQuery->orderBy('price', 'asc');
+                break;
+            case 'price_desc':
+                $excursionsQuery->orderBy('price', 'desc');
+                break;
+            case 'duration_asc':
+                $excursionsQuery->orderBy('duration', 'asc');
+                break;
+            case 'duration_desc':
+                $excursionsQuery->orderBy('duration', 'desc');
+                break;
+            default:
+                $excursionsQuery->orderBy('created_at', 'desc');
+                break;
+        }
 
+        // Формируем данные для представления
         return view('livewire.excursions-list', [
-            'excursions' => $query->paginate(12),
+            'excursions' => $excursionsQuery->paginate(12),
             'categories' => Category::whereIn('name', [
                 'Исторические', 'Архитектурные', 'Гастрономические',
                 'Природные', 'Современные', 'Еда и напитки',
