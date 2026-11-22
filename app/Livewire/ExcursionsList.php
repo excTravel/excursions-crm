@@ -69,11 +69,11 @@ class ExcursionsList extends Component
         $excursionsQuery->whereHas('location', fn ($locations) => $locations->where('country', 'Россия'));
 
         // Поиск по ключевым словам
-        if (!empty($this->search)) {
+        if (! empty($this->search)) {
             $excursionsQuery->where(function ($query) {
-                $query->where('title', 'like', '%' . $this->search . '%')
-                    ->orWhere('description', 'like', '%' . $this->search . '%')
-                    ->orWhereHas('location', fn ($loc) => $loc->where('city', 'like', '%' . $this->search . '%'));
+                $query->where('title', 'like', '%'.$this->search.'%')
+                    ->orWhere('description', 'like', '%'.$this->search.'%')
+                    ->orWhereHas('location', fn ($loc) => $loc->where('city', 'like', '%'.$this->search.'%'));
             });
         }
 
@@ -83,12 +83,12 @@ class ExcursionsList extends Component
         }
 
         // Фильтрация по локации
-        if (!empty($this->selectedLocation)) {
+        if (! empty($this->selectedLocation)) {
             $excursionsQuery->where('location_id', $this->selectedLocation);
         }
 
         // Фильтрация по дате
-        if (!empty($this->selectedDate)) {
+        if (! empty($this->selectedDate)) {
             $excursionsQuery->whereHas('schedules', fn ($schedules) => $schedules
                 ->upcoming()
                 ->whereDate('date', $this->selectedDate));
