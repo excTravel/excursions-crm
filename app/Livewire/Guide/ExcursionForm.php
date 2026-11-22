@@ -98,8 +98,10 @@ class ExcursionForm extends Component
 
     public function save()
     {
+        // Валидация входящих данных формы
         $this->validate();
 
+        // Создаем запись в БД. По умолчанию экскурсия уходит на модерацию.
         $excursion = Excursion::create([
             'title' => $this->title,
             'description' => $this->description,
@@ -111,6 +113,7 @@ class ExcursionForm extends Component
             'status' => 'pending',
         ]);
 
+        // Сохранение маршрута на карте
         if (! empty($this->routePoints)) {
             $excursion->routes()->create([
                 'coordinates' => $this->routePoints,
@@ -118,6 +121,7 @@ class ExcursionForm extends Component
             ]);
         }
 
+        // Загрузка и сохранение фотографий
         if (! empty($this->photos)) {
             foreach ($this->photos as $index => $photo) {
                 $path = $photo->store('excursions', 'public');
@@ -128,9 +132,10 @@ class ExcursionForm extends Component
             }
         }
 
-        // 💡 Сохраняем дополнительные услуги
+        // Сохраняем дополнительные услуги
         $this->saveExtraServices($excursion);
 
+        // Уведомление и редирект
         session()->flash('success', 'Экскурсия успешно создана!');
 
         return redirect()->route('guide.excursions');
@@ -162,6 +167,7 @@ class ExcursionForm extends Component
 
     public function render()
     {
+        // Загружаем справочники для выпадающих списков
         return view('livewire.guide.excursion-form', [
             'categories' => Category::all(),
             'locations' => Location::all(),
