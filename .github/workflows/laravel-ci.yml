@@ -6,12 +6,18 @@ on:
     paths:
       - 'app/**'
       - 'routes/**'
+      - 'config/**'
+      - 'database/**'
+      - 'bootstrap/**'
+      - 'resources/**'
       - 'tests/**'
       - 'composer.json'
       - 'composer.lock'
       - 'package.json'
       - 'package-lock.json'
       - 'Dockerfile'
+      - 'compose.yaml'
+      - '.env.example'
       - '.github/workflows/laravel-ci.yml'
 
 concurrency:
