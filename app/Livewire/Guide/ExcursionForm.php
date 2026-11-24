@@ -48,7 +48,6 @@ class ExcursionForm extends Component
         'extraServices.*.is_active' => 'boolean',
     ];
 
-    // ВАЖНО: метод вызывается напрямую из JS через component.call('addRoutePoint', payload)
     public function addRoutePoint(array $payload): void
     {
         $lat = isset($payload['lat']) ? (float) $payload['lat'] : null;
@@ -62,7 +61,6 @@ class ExcursionForm extends Component
             'lng' => round($lng, 6),
         ];
 
-        // Сообщаем фронту перерисовать карту
         $this->dispatch('routeUpdated', $this->routePoints);
     }
 
@@ -73,9 +71,6 @@ class ExcursionForm extends Component
         $this->dispatch('routeUpdated', $this->routePoints);
     }
 
-    /**
-     * Добавить строку доп. услуги в форме
-     */
     public function addExtraServiceRow(): void
     {
         $this->extraServices[] = [
@@ -87,9 +82,6 @@ class ExcursionForm extends Component
         ];
     }
 
-    /**
-     * Удалить строку доп. услуги
-     */
     public function removeExtraServiceRow(int $index): void
     {
         unset($this->extraServices[$index]);
@@ -98,10 +90,8 @@ class ExcursionForm extends Component
 
     public function save()
     {
-        // Валидация входящих данных формы
         $this->validate();
 
-        // Создаем запись в БД. По умолчанию экскурсия уходит на модерацию.
         $excursion = Excursion::create([
             'title' => $this->title,
             'description' => $this->description,
@@ -113,32 +103,47 @@ class ExcursionForm extends Component
             'status' => 'pending',
         ]);
 
-        // Сохранение маршрута на карте
-        if (! empty($this->routePoints)) {
-            $excursion->routes()->create([
-                'coordinates' => $this->routePoints,
-                'description' => 'Основной маршрут',
-            ]);
-        }
-
-        // Загрузка и сохранение фотографий
-        if (! empty($this->photos)) {
-            foreach ($this->photos as $index => $photo) {
-                $path = $photo->store('excursions', 'public');
-                $excursion->photos()->create([
-                    'path' => $path,
-                    'sort_order' => $index,
-                ]);
-            }
-        }
-
-        // Сохраняем дополнительные услуги
+        // Вызов вынесенных методов
+        $this->saveRoutes($excursion);
+        $this->savePhotos($excursion);
         $this->saveExtraServices($excursion);
 
-        // Уведомление и редирект
         session()->flash('success', 'Экскурсия успешно создана!');
 
         return redirect()->route('guide.excursions');
+    }
+
+    /**
+     * Сохранение маршрута на карте
+     */
+    private function saveRoutes(Excursion $excursion): void
+    {
+        if (empty($this->routePoints)) {
+            return;
+        }
+
+        $excursion->routes()->create([
+            'coordinates' => $this->routePoints,
+            'description' => 'Основной маршрут',
+        ]);
+    }
+
+    /**
+     * Загрузка и сохранение фотографий
+     */
+    private function savePhotos(Excursion $excursion): void
+    {
+        if (empty($this->photos)) {
+            return;
+        }
+
+        foreach ($this->photos as $index => $photo) {
+            $path = $photo->store('excursions', 'public');
+            $excursion->photos()->create([
+                'path' => $path,
+                'sort_order' => $index,
+            ]);
+        }
     }
 
     /**
@@ -146,7 +151,6 @@ class ExcursionForm extends Component
      */
     private function saveExtraServices(Excursion $excursion): void
     {
-        // Оставляем только осмысленные строки (с названием и ценой)
         $rows = collect($this->extraServices)
             ->filter(function ($row) {
                 return ! empty($row['name'])
@@ -167,7 +171,6 @@ class ExcursionForm extends Component
 
     public function render()
     {
-        // Загружаем справочники для выпадающих списков
         return view('livewire.guide.excursion-form', [
             'categories' => Category::all(),
             'locations' => Location::all(),

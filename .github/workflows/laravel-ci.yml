@@ -77,6 +77,8 @@ jobs:
       run: ./vendor/bin/pint --test
     - name: Run Static Analysis (Larastan)
       run: ./vendor/bin/phpstan analyse --memory-limit=2G --error-format=github
+    - name: Check Code Complexity (PHP_CodeSniffer)
+      run: ./vendor/bin/phpcs --standard=Generic --sniffs=Generic.Metrics.CyclomaticComplexity --severity=1 app/
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
