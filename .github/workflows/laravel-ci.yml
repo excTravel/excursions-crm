@@ -77,6 +77,8 @@ jobs:
       run: ./vendor/bin/pint --test
     - name: Run Static Analysis (Larastan)
       run: ./vendor/bin/phpstan analyse --memory-limit=2G --error-format=github
+    - name: Check Code Complexity (PHP_CodeSniffer)
+      run: ./vendor/bin/phpcs --standard=Generic --sniffs=Generic.Metrics.CyclomaticComplexity --severity=1 app/
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
@@ -118,7 +120,7 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/yazevivan/excursions-crm/app:lab3-${{ github.sha }}
+          tags: ghcr.io/exctravel/excursions-crm:lab3-${{ github.sha }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
       - name: Move cache
