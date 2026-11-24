@@ -1,0 +1,301 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Access to an undefined property App\\Models\\Schedule\:\:\$excursion\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Console/Commands/UpdateFinishedSchedules.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Schedule\:\:\$start_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Console/Commands/UpdateFinishedSchedules.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Schedule\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Console/Commands/UpdateFinishedSchedules.php
+
+		-
+			message: '#^Relation ''excursion'' is not found in App\\Models\\Schedule model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Console/Commands/UpdateFinishedSchedules.php
+
+		-
+			message: '#^Parameter \#1 \$user of class Illuminate\\Auth\\Events\\Verified constructor expects Illuminate\\Contracts\\Auth\\MustVerifyEmail, App\\Models\\User\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Auth/VerifyEmailController.php
+
+		-
+			message: '#^Relation ''excursion'' is not found in App\\Models\\Booking model\.$#'
+			identifier: larastan.relationExistence
+			count: 3
+			path: app/Livewire/Admin/BookingsTable.php
+
+		-
+			message: '#^Relation ''extraServices'' is not found in App\\Models\\Booking model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Livewire/Admin/BookingsTable.php
+
+		-
+			message: '#^Relation ''schedule'' is not found in App\\Models\\Booking model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Livewire/Admin/BookingsTable.php
+
+		-
+			message: '#^Relation ''user'' is not found in App\\Models\\Booking model\.$#'
+			identifier: larastan.relationExistence
+			count: 3
+			path: app/Livewire/Admin/BookingsTable.php
+
+		-
+			message: '#^Access to an undefined property App\\Livewire\\Admin\\ExcursionsTable\:\:\$excursions\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Admin/ExcursionsTable.php
+
+		-
+			message: '#^Relation ''category'' is not found in App\\Models\\Excursion model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Livewire/Admin/ExcursionsTable.php
+
+		-
+			message: '#^Relation ''extraServices'' is not found in App\\Models\\Excursion model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Livewire/Admin/ExcursionsTable.php
+
+		-
+			message: '#^Relation ''guide'' is not found in App\\Models\\Excursion model\.$#'
+			identifier: larastan.relationExistence
+			count: 3
+			path: app/Livewire/Admin/ExcursionsTable.php
+
+		-
+			message: '#^Relation ''location'' is not found in App\\Models\\Excursion model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Livewire/Admin/ExcursionsTable.php
+
+		-
+			message: '#^Relation ''photos'' is not found in App\\Models\\Excursion model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Livewire/Admin/ExcursionsTable.php
+
+		-
+			message: '#^Relation ''routes'' is not found in App\\Models\\Excursion model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Livewire/Admin/ExcursionsTable.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: app/Livewire/Admin/ExcursionsTable.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between ''approved''\|''pending''\|''rejected'' and ''archived'' will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Livewire/Admin/ExcursionsTable.php
+
+		-
+			message: '#^Relation ''excursion'' is not found in App\\Models\\Review model\.$#'
+			identifier: larastan.relationExistence
+			count: 3
+			path: app/Livewire/Admin/ReviewsTable.php
+
+		-
+			message: '#^Relation ''user'' is not found in App\\Models\\Review model\.$#'
+			identifier: larastan.relationExistence
+			count: 3
+			path: app/Livewire/Admin/ReviewsTable.php
+
+		-
+			message: '#^Ternary operator condition is always true\.$#'
+			identifier: ternary.alwaysTrue
+			count: 1
+			path: app/Livewire/BookingForm.php
+
+		-
+			message: '#^Relation ''category'' is not found in App\\Models\\Excursion model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Livewire/ExcursionShow.php
+
+		-
+			message: '#^Relation ''guide'' is not found in App\\Models\\Excursion model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Livewire/ExcursionShow.php
+
+		-
+			message: '#^Relation ''location'' is not found in App\\Models\\Excursion model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Livewire/ExcursionShow.php
+
+		-
+			message: '#^Relation ''photos'' is not found in App\\Models\\Excursion model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Livewire/ExcursionShow.php
+
+		-
+			message: '#^Relation ''pricingRules'' is not found in App\\Models\\Excursion model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Livewire/ExcursionShow.php
+
+		-
+			message: '#^Relation ''reviews'' is not found in App\\Models\\Excursion model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Livewire/ExcursionShow.php
+
+		-
+			message: '#^Relation ''routes'' is not found in App\\Models\\Excursion model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Livewire/ExcursionShow.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Excursion\>\:\:upcoming\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Livewire/ExcursionsList.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\Relation\<\*, \*, \*\>\:\:upcoming\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Livewire/ExcursionsList.php
+
+		-
+			message: '#^Relation ''category'' is not found in App\\Models\\Excursion model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Livewire/ExcursionsList.php
+
+		-
+			message: '#^Relation ''location'' is not found in App\\Models\\Excursion model\.$#'
+			identifier: larastan.relationExistence
+			count: 3
+			path: app/Livewire/ExcursionsList.php
+
+		-
+			message: '#^Relation ''photos'' is not found in App\\Models\\Excursion model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Livewire/ExcursionsList.php
+
+		-
+			message: '#^Relation ''pricingRules'' is not found in App\\Models\\Excursion model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Livewire/ExcursionsList.php
+
+		-
+			message: '#^Relation ''schedules'' is not found in App\\Models\\Excursion model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Livewire/ExcursionsList.php
+
+		-
+			message: '#^Relation ''extraServices'' is not found in App\\Models\\Booking model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Livewire/Guide/Bookings.php
+
+		-
+			message: '#^Relation ''schedule'' is not found in App\\Models\\Booking model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Livewire/Guide/Bookings.php
+
+		-
+			message: '#^Relation ''user'' is not found in App\\Models\\Booking model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Livewire/Guide/Bookings.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Excursion\:\:\$extraServices\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Guide/ExcursionEdit.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Excursion\:\:\$routes\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Livewire/Guide/ExcursionEdit.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>coordinates" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Livewire/Guide/ExcursionEdit.php
+
+		-
+			message: '#^Relation ''category'' is not found in App\\Models\\Excursion model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Livewire/Guide/ExcursionsList.php
+
+		-
+			message: '#^Relation ''location'' is not found in App\\Models\\Excursion model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Livewire/Guide/ExcursionsList.php
+
+		-
+			message: '#^Relation ''extraServices'' is not found in App\\Models\\Booking model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Livewire/MyBookings.php
+
+		-
+			message: '#^Relation ''schedule'' is not found in App\\Models\\Booking model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Livewire/MyBookings.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Booking\:\:\$schedule\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Models/Booking.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Schedule\:\:\$excursion\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Schedule.php
+
+		-
+			message: '#^Instanceof between Carbon\\Carbon and Carbon\\Carbon will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 2
+			path: app/Models/Schedule.php
+
+		-
+			message: '#^Left side of && is always true\.$#'
+			identifier: booleanAnd.leftAlwaysTrue
+			count: 1
+			path: app/Models/Schedule.php
+
+		-
+			message: '#^Right side of && is always true\.$#'
+			identifier: booleanAnd.rightAlwaysTrue
+			count: 1
+			path: app/Models/Schedule.php
