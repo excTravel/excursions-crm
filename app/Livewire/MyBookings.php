@@ -17,9 +17,10 @@ class MyBookings extends Component
 
     public function loadBookings(): void
     {
+        // Загружаем бронирования текущего пользователя с расписанием и доп. услугами
         $this->bookings = Booking::with([
             'schedule.excursion',
-            'extraServices', // 🔹 подгружаем доп. услуги
+            'extraServices',
         ])
             ->where('user_id', Auth::id())
             ->latest()
@@ -32,6 +33,7 @@ class MyBookings extends Component
             ->where('user_id', Auth::id())
             ->findOrFail($id);
 
+        // Проверяем, можно ли отменить бронирование (зависит от времени до начала)
         if (! $booking->canBeCanceled()) {
             $this->dispatch('notify', message: '❌ Бронирование уже нельзя отменить (меньше 24 ч)');
 
@@ -40,7 +42,9 @@ class MyBookings extends Component
 
         $booking->update(['status' => 'canceled']);
 
-        $this->loadBookings(); // 🔄 обновляем список
+        // Обновляем список бронирований после отмены
+        $this->loadBookings();
+
         $this->dispatch('notify', message: '✅ Бронирование успешно отменено');
     }
 
