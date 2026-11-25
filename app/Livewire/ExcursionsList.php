@@ -55,13 +55,6 @@ class ExcursionsList extends Component
                 'category',
                 'location',
                 'photos',
-                'pricingRules' => fn ($rules) => $rules->orderBy('min_people')->orderBy('max_people'),
-                'schedules' => fn ($schedules) => $schedules
-                    ->upcoming()
-                    ->when($this->selectedDate, fn ($slots) => $slots->whereDate('date', $this->selectedDate))
-                    ->orderBy('date')
-                    ->orderBy('start_time')
-                    ->with(['bookings' => fn ($bookings) => $bookings->whereIn('status', ['pending', 'confirmed'])]),
             ]);
 
         // Показываем клиентам только одобренные экскурсии
