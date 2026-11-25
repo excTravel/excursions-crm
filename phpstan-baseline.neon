@@ -168,17 +168,23 @@ parameters:
 			count: 1
 			path: app/Livewire/ExcursionShow.php
 
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Excursion\>\:\:upcoming\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Livewire/ExcursionsList.php
+		#-
+		#	message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Excursion\>\:\:upcoming\(\)\.$#'
+		#	identifier: method.notFound
+		#	count: 1
+		#	path: app/Livewire/ExcursionsList.php
 
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\Relation\<\*, \*, \*\>\:\:upcoming\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: app/Livewire/ExcursionsList.php
+		#-
+		#	message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\Relation\<\*, \*, \*\>\:\:upcoming\(\)\.$#'
+		#	identifier: method.notFound
+		#	count: 1
+		#	path: app/Livewire/ExcursionsList.php
+
+		#-
+		#	message: '#^Relation ''schedules'' is not found in App\\Models\\Excursion model\.$#'
+		#	identifier: larastan.relationExistence
+		#	count: 2
+		#	path: app/Livewire/ExcursionsList.php
 
 		-
 			message: '#^Relation ''category'' is not found in App\\Models\\Excursion model\.$#'
@@ -202,12 +208,6 @@ parameters:
 			message: '#^Relation ''pricingRules'' is not found in App\\Models\\Excursion model\.$#'
 			identifier: larastan.relationExistence
 			count: 1
-			path: app/Livewire/ExcursionsList.php
-
-		-
-			message: '#^Relation ''schedules'' is not found in App\\Models\\Excursion model\.$#'
-			identifier: larastan.relationExistence
-			count: 2
 			path: app/Livewire/ExcursionsList.php
 
 		-
