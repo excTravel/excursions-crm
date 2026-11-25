@@ -474,4 +474,26 @@ class ExcursionManagementTest extends TestCase
         $this->assertEquals($schedule->id, $booking->schedule->id);
         $this->assertEquals(3000, $booking->total_price);
     }
+
+    /** @test */
+    public function user_model_attributes_and_casts_are_working()
+    {
+        $user = User::factory()->create([
+            'name' => 'Тестовый Пользователь',
+            'email' => 'test@example.com',
+            'role' => 'client',
+        ]);
+
+        // Проверяем, что атрибуты сохраняются и читаются
+        $this->assertEquals('Тестовый Пользователь', $user->name);
+        $this->assertEquals('test@example.com', $user->email);
+        $this->assertEquals('client', $user->role);
+
+        // Проверяем, что это экземпляр модели
+        $this->assertInstanceOf(User::class, $user);
+
+        // Пробуем обновить
+        $user->update(['role' => 'guide']);
+        $this->assertEquals('guide', $user->fresh()->role);
+    }
 }
