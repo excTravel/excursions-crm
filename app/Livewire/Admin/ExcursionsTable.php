@@ -29,11 +29,11 @@ class ExcursionsTable extends Component
 
     protected $queryString = ['search', 'statusFilter'];
 
-    // 📦 Получение экскурсий
+    // Получение списка экскурсий
     public function getExcursionsProperty()
     {
         return Excursion::query()
-            ->with(['guide', 'extraServices', 'routes']) // 🔹 добавили routes
+            ->with(['guide', 'extraServices', 'routes'])
             ->when($this->statusFilter === 'archived', fn ($q) => $q->where('status', 'archived'))
             ->when($this->statusFilter === 'active', fn ($q) => $q->where('status', '!=', 'archived'))
             ->when($this->search, fn ($q) => $q->where('title', 'like', "%{$this->search}%")
@@ -43,7 +43,7 @@ class ExcursionsTable extends Component
             ->paginate(10);
     }
 
-    // ✅ Одобрить экскурсию
+    // Одобрить экскурсию
     public function approve(int $id)
     {
         if ($exc = Excursion::find($id)) {
@@ -72,7 +72,7 @@ class ExcursionsTable extends Component
         }
     }
 
-    // ❌ Отклонить экскурсию
+    // Отклонить экскурсию
     public function reject()
     {
         if (! $this->selectedExcursion) {
@@ -89,14 +89,14 @@ class ExcursionsTable extends Component
         session()->flash('success', '❌ Экскурсия отклонена');
     }
 
-    // 📁 Открыть модалку подтверждения архивации
+    // Открыть модалку подтверждения архивации
     public function openArchiveConfirm(int $id)
     {
         $this->selectedExcursion = Excursion::find($id);
         $this->showArchiveConfirm = true;
     }
 
-    // 🗂 Архивировать экскурсию
+    // Архивировать экскурсию
     public function archive()
     {
         if (! $this->selectedExcursion) {
@@ -108,7 +108,7 @@ class ExcursionsTable extends Component
         session()->flash('success', '🚫 Экскурсия отправлена в архив');
     }
 
-    // 🗑 Перемещение в корзину
+    // Перемещение в корзину
     public function deleteExcursion(int $id)
     {
         if ($exc = Excursion::find($id)) {
@@ -133,7 +133,7 @@ class ExcursionsTable extends Component
             'location',
             'photos',
             'extraServices',
-            'routes', // 🔹 сюда тоже
+            'routes',
         ])
             ->withTrashed()
             ->findOrFail($id);
