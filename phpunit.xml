@@ -28,7 +28,6 @@
             <file>app/Models/Schedule.php</file>
             <file>app/Models/Category.php</file>
             <file>app/Models/Location.php</file>
-            <file>app/Models/User.php</file>
         </include>
     </source>
     <php>
