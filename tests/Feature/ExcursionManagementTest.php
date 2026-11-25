@@ -567,4 +567,37 @@ class ExcursionManagementTest extends TestCase
         $this->assertEquals('admin', $user->fresh()->role);
         $this->assertTrue(true); // Заглушка для покрытия
     }
+
+    /** @test */
+    public function excursion_show_handles_schedules_and_booking_model_relations()
+    {
+        $client = User::factory()->create(['role' => 'client']);
+        $excursion = Excursion::factory()->create(['status' => 'approved']);
+
+        $schedule = Schedule::create([
+            'excursion_id' => $excursion->id,
+            'date' => now()->addDays(2)->format('Y-m-d'),
+            'start_time' => '10:00:00',
+            'max_people' => 10,
+        ]);
+
+        // 1. Заставляем ExcursionShow загрузить расписание (покрывает код в компоненте)
+        $this->get("/excursions/{$excursion->slug}")->assertStatus(200);
+
+        // 2. Создаем бронь и проверяем её связи (покрывает методы в Booking)
+        $booking = Booking::create([
+            'user_id' => $client->id,
+            'schedule_id' => $schedule->id,
+            'people_count' => 2,
+            'total_price' => 3000,
+            'status' => 'pending',
+            'payment_status' => 'unpaid',
+        ]);
+
+        // Проверяем связь booking->excursion через schedule
+        $this->assertEquals($excursion->id, $booking->schedule->excursion_id);
+
+        // Проверяем метод canBeCanceled() с реальной связью
+        $this->assertTrue($booking->canBeCanceled());
+    }
 }
