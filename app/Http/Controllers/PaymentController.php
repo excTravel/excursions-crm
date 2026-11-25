@@ -10,15 +10,15 @@ class PaymentController extends Controller
 {
     public function show(Booking $booking)
     {
-        // Только владелец может платить
+        // Проверяем, что бронирование принадлежит текущему пользователю
         if ($booking->user_id !== Auth::id()) {
             abort(403);
         }
 
-        // Если уже оплачено — просто уводим в "Мои бронирования"
+        // Если уже оплачено, перенаправляем в личный кабинет
         if ($booking->payment_status === 'paid') {
             return redirect()
-                ->route('bookings.my') // 👈 если у тебя другой роут — поменяй тут
+                ->route('bookings.my')
                 ->with('success', 'Это бронирование уже оплачено.');
         }
 
@@ -33,27 +33,28 @@ class PaymentController extends Controller
 
         if ($booking->payment_status === 'paid') {
             return redirect()
-                ->route('bookings.my') // или твой роут
+                ->route('bookings.my')
                 ->with('success', 'Это бронирование уже оплачено.');
         }
 
+        // Валидация платежных данных
         $data = $request->validate([
             'card_number' => ['required', 'digits_between:16,19'],
             'card_name' => ['required', 'string', 'max:255'],
-            'card_expiry' => ['required', 'regex:/^(0[1-9]|1[0-2])\/\d{2}$/'], // MM/YY
+            'card_expiry' => ['required', 'regex:/^(0[1-9]|1[0-2])\/\d{2}$/'], // Формат MM/YY
             'card_cvv' => ['required', 'digits_between:3,4'],
         ]);
 
         $digits = preg_replace('/\D/', '', $data['card_number']);
         $last4 = substr($digits, -4);
 
-        // 🔥 тут главное изменение — авто-подтверждение
+        // Автоматическое подтверждение после успешной оплаты
         $booking->payment_status = 'paid';
         $booking->payment_method = 'card';
         $booking->payment_last4 = $last4;
         $booking->paid_at = now();
 
-        // только если бронь ещё не отменена — подтверждаем
+        // Подтверждаем бронь, только если она еще не отменена
         if ($booking->status === 'pending') {
             $booking->status = 'confirmed';
         }
@@ -61,7 +62,7 @@ class PaymentController extends Controller
         $booking->save();
 
         return redirect()
-            ->route('bookings.my') // подставь свой
+            ->route('bookings.my')
             ->with('success', 'Оплата успешно выполнена, бронирование подтверждено.');
     }
 }
