@@ -496,4 +496,33 @@ class ExcursionManagementTest extends TestCase
         $user->update(['role' => 'guide']);
         $this->assertEquals('guide', $user->fresh()->role);
     }
+
+    /** @test */
+    public function payment_controller_redirects_and_handles_errors()
+    {
+        $client = User::factory()->create(['role' => 'client']);
+        $excursion = Excursion::factory()->create(['status' => 'approved']);
+        $schedule = Schedule::create([
+            'excursion_id' => $excursion->id,
+            'date' => now()->addDays(2)->format('Y-m-d'),
+            'start_time' => '10:00:00',
+            'max_people' => 10,
+        ]);
+
+        $booking = Booking::create([
+            'user_id' => $client->id,
+            'schedule_id' => $schedule->id,
+            'people_count' => 2,
+            'total_price' => 3000,
+            'status' => 'pending',
+            'payment_status' => 'unpaid',
+        ]);
+
+        // 1. Открываем страницу оплаты (покрывает show())
+        $this->actingAs($client)->get("/payment/booking/{$booking->id}")->assertStatus(200);
+
+        // 2. Пытаемся оплатить чужую бронь (покрывает проверку 403)
+        $otherClient = User::factory()->create(['role' => 'client']);
+        $this->actingAs($otherClient)->get("/payment/booking/{$booking->id}")->assertStatus(403);
+    }
 }
