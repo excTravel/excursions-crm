@@ -525,4 +525,45 @@ class ExcursionManagementTest extends TestCase
         $otherClient = User::factory()->create(['role' => 'client']);
         $this->actingAs($otherClient)->get("/payment/booking/{$booking->id}")->assertStatus(403);
     }
+
+    /** @test */
+    public function user_model_and_booking_relationship_are_fully_covered()
+    {
+        // 1. Создаем пользователя
+        $user = User::factory()->create([
+            'name' => 'Иван',
+            'email' => 'ivan@example.com',
+            'role' => 'guide',
+        ]);
+
+        // 2. Проверяем, что модель загрузилась и атрибуты на месте
+        $this->assertTrue($user->exists);
+        $this->assertEquals('guide', $user->role);
+
+        // 3. Создаем бронь, чтобы покрыть модель Booking
+        $excursion = Excursion::factory()->create(['status' => 'approved']);
+        $schedule = Schedule::create([
+            'excursion_id' => $excursion->id,
+            'date' => now()->addDays(2)->format('Y-m-d'),
+            'start_time' => '10:00:00',
+            'max_people' => 10,
+        ]);
+
+        $booking = Booking::create([
+            'user_id' => $user->id,
+            'schedule_id' => $schedule->id,
+            'people_count' => 2,
+            'total_price' => 3000,
+            'status' => 'pending',
+        ]);
+
+        // 4. Загружаем связь (это выполняет код внутри модели Booking)
+        $this->assertEquals($user->id, $booking->user->id);
+        $this->assertEquals($schedule->id, $booking->schedule->id);
+
+        // 5. Принудительно обновляем модель User (чтобы методы save/update выполнились)
+        $user->role = 'admin';
+        $user->save();
+        $this->assertEquals('admin', $user->fresh()->role);
+    }
 }
