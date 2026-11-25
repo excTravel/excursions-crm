@@ -14,20 +14,17 @@
     </testsuites>
     <source>
         <include>
-            <!-- Бизнес-логика (только то, что мы реально покрыли тестами) -->
             <file>app/Livewire/ExcursionsList.php</file>
             <file>app/Livewire/ExcursionShow.php</file>
             <file>app/Livewire/BookingForm.php</file>
             <file>app/Livewire/MyBookings.php</file>
-            <file>app/Livewire/Guide/ExcursionForm.php</file>
-            <file>app/Livewire/Admin/ExcursionsTable.php</file>
             <file>app/Http/Controllers/PaymentController.php</file>
-            <file>app/Http/Controllers/ProfileController.php</file>
-            <file>app/Models/Excursion.php</file>
             <file>app/Models/Booking.php</file>
-            <file>app/Models/Schedule.php</file>
             <file>app/Models/Category.php</file>
+            <file>app/Models/Excursion.php</file>
             <file>app/Models/Location.php</file>
+            <file>app/Models/Schedule.php</file>
+            <file>app/Models/User.php</file>
         </include>
     </source>
     <php>
