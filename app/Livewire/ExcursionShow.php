@@ -40,7 +40,9 @@ class ExcursionShow extends Component
 
     public function render()
     {
-        return view('livewire.excursion-show')
-            ->layout('layouts.app');
+        // Рендерим страницу с детальной информацией об экскурсии
+        return view('livewire.excursion-show', [
+            'excursionData' => $this->excursion,
+        ])->layout('layouts.app');
     }
 }

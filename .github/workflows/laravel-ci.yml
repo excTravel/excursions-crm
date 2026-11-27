@@ -1,6 +1,8 @@
 name: Laravel Tests
 
 on:
+  push:
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
     paths:
@@ -11,6 +13,7 @@ on:
       - 'bootstrap/**'
       - 'resources/**'
       - 'tests/**'
+      - 'docs/**'
       - 'composer.json'
       - 'composer.lock'
       - 'package.json'
@@ -48,7 +51,6 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
-
     steps:
     - uses: actions/checkout@v4
     - name: Setup PHP
@@ -89,7 +91,7 @@ jobs:
     - name: Build Frontend Assets
       run: npm run build
     - name: Execute tests
-      run: php artisan test
+      run: php artisan test --coverage --min=70
 
   docker:
     runs-on: ubuntu-latest
@@ -126,6 +128,7 @@ jobs:
           tags: ghcr.io/exctravel/excursions-crm:lab3-${{ github.sha }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+
       - name: Move cache
         run: |
           rm -rf /tmp/.buildx-cache

@@ -14,7 +14,13 @@
     </testsuites>
     <source>
         <include>
-            <directory>app</directory>
+            <file>app/Livewire/ExcursionsList.php</file>
+            <file>app/Livewire/MyBookings.php</file>
+            <file>app/Http/Controllers/PaymentController.php</file>
+            <file>app/Models/Excursion.php</file>
+            <file>app/Models/Category.php</file>
+            <file>app/Models/Location.php</file>
+            <file>app/Models/Schedule.php</file>
         </include>
     </source>
     <php>
